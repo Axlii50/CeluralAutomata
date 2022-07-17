@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CeluralAutomata", "OpenTk\CeluralAutomata.csproj", "{B388CE97-EE72-41BB-852F-F4187A1AEE65}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CeluralAutomata", "CeluralAutomata\CeluralAutomata.csproj", "{B388CE97-EE72-41BB-852F-F4187A1AEE65}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +20,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {7427D085-FE75-4CD9-8F36-8093B04CE2A2}
+		SolutionGuid = {48F3A184-40B4-4378-9D4C-5CB1BF080D91}
 	EndGlobalSection
 EndGlobal
