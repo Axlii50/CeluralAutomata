@@ -49,6 +49,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bufforable.cs" />
+    <Compile Include="Interfaces\Deletable.cs" />
+    <Compile Include="Interfaces\Drawable.cs" />
+    <Compile Include="Interfaces\Program.cs" />
+    <Compile Include="Interfaces\Updatable.cs" />
+    <Compile Include="PrayAndPredators\PAP.cs" />
+    <Compile Include="PrayAndPredators\Predator.cs" />
+    <Compile Include="PrayAndPredators\Prey.cs" />
+    <Compile Include="Rectangle.cs" />
     <Compile Include="shader.cs" />
     <Compile Include="MainWindow.cs" />
     <Compile Include="Program.cs" />
@@ -64,6 +73,18 @@
     </Compile>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
+    <None Include="PrayAndPredators\shaders\shader_Predator.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="PrayAndPredators\shaders\shader_Predator.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="PrayAndPredators\shaders\shader_Prey.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="PrayAndPredators\shaders\shader_Prey.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -83,5 +104,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
