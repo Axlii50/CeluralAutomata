@@ -9,13 +9,14 @@ namespace OpenTk
 {
     static class Program
     {
+        public static Random rnd = new Random();
         /// <summary>
         /// Główny punkt wejścia dla aplikacji.
         /// </summary>
         [STAThread]
         static void Main()
         {
-            new MainWindow().Run(60.0);
+            new MainWindow().Run(60,0);
         }
     }
 }

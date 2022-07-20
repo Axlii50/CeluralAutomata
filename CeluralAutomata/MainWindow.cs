@@ -14,35 +14,40 @@ namespace OpenTk
 {
     public sealed class MainWindow : GameWindow
     {
+        public static float x_scaled;
+        public static float y_scaled;
+
         public MainWindow() : base(1920, 1080,
             GraphicsMode.Default,
-            "OpenTk",
+            "Cellural Automata",
             GameWindowFlags.Default,
             DisplayDevice.Default,
             4,
             0,
             GraphicsContextFlags.ForwardCompatible)
         {
-
+            //disable vsync
+            this.VSync = VSyncMode.Off;
         }
-
-
         protected override void OnResize(EventArgs e)
         {
-            //GL.Viewport(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width, ClientRectangle.Height);
-            GL.Viewport(0, 0, 1920, 1080);
+            base.OnResize(e);
+            GL.Viewport(this.ClientRectangle);
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.LoadIdentity();
+            GL.Ortho(0, 1000, 1000, 0, -1, 0);
         }
 
-        private shader _Shader;
+        private PAP preyandpredator;
         protected override void OnLoad(EventArgs e)
         {
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
-            rects = new Rectangle[] { new Rectangle(1, 1), new Rectangle(3, 3) };
+            x_scaled = 1000 / 1920f;
+            y_scaled = 1000 / 1080f;
 
-            _Shader = new shader("Shaders/shader.vert", "Shaders/shader.frag");
-
-            _Shader.Use();
+            preyandpredator = new PAP();
+            preyandpredator.Init();
         }
 
         protected override void OnUnload(EventArgs e)
@@ -51,10 +56,7 @@ namespace OpenTk
             GL.BindVertexArray(0);
             GL.UseProgram(0);
 
-            foreach (OpenTk.Interfaces.Deletable x in rects)
-                x.Clear();
-
-            GL.DeleteProgram(_Shader.Handle);
+            preyandpredator.Clear();
             base.OnUnload(e);
         }
 
@@ -62,21 +64,22 @@ namespace OpenTk
         {
             base.OnKeyDown(e);
 
-
             if (e.Keyboard.IsKeyDown(Key.F))
+            {
+
+            }
+
+            if (e.Keyboard.IsKeyDown(Key.W))
             {
 
             }
         }
 
-        public static float x_scaled = 1000 / 1920f;
-        public static float y_scaled = 1000 / 1080f;
-
-        Rectangle[] rects;
-
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
+
+            preyandpredator.Update(this.UpdateTime);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -85,11 +88,7 @@ namespace OpenTk
 
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
-            _Shader.Use();
-
-
-            foreach (OpenTk.Interfaces.Drawable x in rects)
-                x.Draw();
+            preyandpredator.Draw();
 
             SwapBuffers();
         }

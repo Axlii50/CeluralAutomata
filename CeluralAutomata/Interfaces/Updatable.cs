@@ -8,6 +8,6 @@ namespace OpenTk.Interfaces
 {
     internal interface Updatable
     {
-        void Update();
+        void Update(double updateTime);
     }
 }

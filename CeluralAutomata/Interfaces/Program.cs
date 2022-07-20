@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace OpenTk.Interfaces
 {
-    internal interface Program
+    internal interface Program : Updatable, Drawable , Deletable
     {
         void Init();
 
-        void Update();
-
-        void Draw();
     }
 }
