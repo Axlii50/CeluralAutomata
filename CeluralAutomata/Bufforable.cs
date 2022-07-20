@@ -16,18 +16,26 @@ namespace OpenTk
 
         public Bufforable()
         {
+            //create buffer for vertex buffer object
             _vertexBufferObject = GL.GenBuffer();
+            //bind object
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+            //create vertex array
             _vertexArrayObject = GL.GenVertexArray();
+            //bind object
             GL.BindVertexArray(_vertexArrayObject);
+            
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
             GL.EnableVertexAttribArray(0);
+            //create buffer for element buffer obejct
             _elementBufferObject = GL.GenBuffer();
+            //bind object
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
         }
 
         public void Clear()
         {
+            //delete all buffers
             GL.DeleteBuffer(_vertexArrayObject);
             GL.DeleteBuffer(_vertexBufferObject);
             GL.DeleteBuffer(_elementBufferObject);

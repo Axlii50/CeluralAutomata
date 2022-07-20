@@ -39,6 +39,7 @@ namespace OpenTk.PrayAndPredators
             GL.NamedBufferData(_elementBufferObject, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
         }
 
+
         public override void Draw()
         {
             Shader.Use();

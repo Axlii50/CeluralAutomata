@@ -16,6 +16,7 @@ namespace OpenTk.PrayAndPredators
       
         private float x, y;
         shader Shader;
+        //healt of predator
         private int health;
 
         public Predator(ref shader shader , int x , int y) : base()
@@ -75,5 +76,6 @@ namespace OpenTk.PrayAndPredators
             x,y + MainWindow.y_scaled,0, // left bottom
             x + MainWindow.x_scaled,y + MainWindow.y_scaled,0, // right bottom
             };
+
     }
 }

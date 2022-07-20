@@ -9,6 +9,7 @@ namespace OpenTk
 {
     static class Program
     {
+        //public static random object for general usage
         public static Random rnd = new Random();
         /// <summary>
         /// Główny punkt wejścia dla aplikacji.

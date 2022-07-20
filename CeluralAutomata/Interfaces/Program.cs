@@ -9,6 +9,5 @@ namespace OpenTk.Interfaces
     internal interface Program : Updatable, Drawable , Deletable
     {
         void Init();
-
     }
 }

@@ -43,10 +43,13 @@ namespace OpenTk
         {
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
+            //set x/y scaled values
             x_scaled = 1000 / 1920f;
             y_scaled = 1000 / 1080f;
 
+            //initialize object of PredatorAndPray
             preyandpredator = new PAP();
+            //init the object
             preyandpredator.Init();
         }
 
@@ -56,6 +59,7 @@ namespace OpenTk
             GL.BindVertexArray(0);
             GL.UseProgram(0);
 
+            //clear all data from object
             preyandpredator.Clear();
             base.OnUnload(e);
         }
@@ -79,6 +83,7 @@ namespace OpenTk
         {
             base.OnUpdateFrame(e);
 
+            //update all objects
             preyandpredator.Update(this.UpdateTime);
         }
 
@@ -86,10 +91,13 @@ namespace OpenTk
         {
             Title = $"(Vsync: {VSync}) FPS: {1f / e.Time:0}";
 
+            //clear buffer
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
+            //draw objects owned by PAP
             preyandpredator.Draw();
 
+            //swap buffers
             SwapBuffers();
         }
     }
