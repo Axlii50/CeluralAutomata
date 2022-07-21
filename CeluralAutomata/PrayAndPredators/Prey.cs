@@ -30,6 +30,7 @@ namespace OpenTk.PrayAndPredators
             GL.NamedBufferData(_elementBufferObject, indices.Length * sizeof(uint), indices, BufferUsageHint.DynamicDraw);
         }
 
+
         public override void Draw()
         {
             //Shader.Use();
@@ -38,7 +39,7 @@ namespace OpenTk.PrayAndPredators
             GL.DrawElements(BeginMode.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
         }
 
-        public int GetHealth() => 100;
+        public int GetHealth() => health;
 
         public override void Update(double updateTime)
         {

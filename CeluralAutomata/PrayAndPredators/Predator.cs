@@ -17,7 +17,7 @@ namespace OpenTk.PrayAndPredators
         private int x, y;
         shader Shader;
         //healt of predator
-        private int health = 75;
+        private int health = 20;
 
         public Predator(shader shader , int x , int y) : base()
         {
@@ -29,6 +29,8 @@ namespace OpenTk.PrayAndPredators
 
             GL.NamedBufferData(_elementBufferObject, indices.Length * sizeof(uint), indices, BufferUsageHint.DynamicDraw);
         }
+
+      
 
         public override void Draw()
         {
@@ -66,23 +68,24 @@ namespace OpenTk.PrayAndPredators
             {
                 PAP.animals[x, y] = null;
                 y++;
-                if (Checkcell(x, y+1))
-                    health = (PAP.animals[x, y +1] as Prey).GetHealth();
+                if (Checkcell(x, y + 1))
+                    health = (PAP.animals[x, y + 1] as Prey).GetHealth();
                 PAP.animals[x, y + 1] = this;
             }
             else if (chance >= 75 && y - 1 > 0)
             {
                 PAP.animals[x, y] = null;
                 y--;
-                if (Checkcell(x, y-1))
-                    health = (PAP.animals[x, y-1] as Prey).GetHealth();
+                if (Checkcell(x, y - 1))
+                    health = (PAP.animals[x, y - 1] as Prey).GetHealth();
                 PAP.animals[x, y - 1] = this;
             }
 
-
             health--;
             if (health < 0)
+            {
                 PAP.animals[x, y] = null;
+            }
 
             //Update data in buffer
             GL.NamedBufferSubData(_vertexBufferObject, IntPtr.Zero, _vertices().Length * sizeof(float), _vertices());

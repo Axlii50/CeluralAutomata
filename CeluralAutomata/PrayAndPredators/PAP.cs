@@ -73,9 +73,9 @@ namespace OpenTk.PrayAndPredators
                 int x = Program.rnd.Next(0, 199),
                     y = Program.rnd.Next(0, 199);
                 if (Program.rnd.Next(1, 100) > 50)
-                    PAP.animals[x, y] = new Prey(this._Shaders[1], x, y);
+                    PAP.animals[x, y] = new Prey(this._Shaders[1], x-30, y-30);
                 else
-                    PAP.animals[x, y] = new Predator(this._Shaders[0], x, y);
+                    PAP.animals[x, y] = new Predator(this._Shaders[0], x-30, y-30);
             }
         }
 
