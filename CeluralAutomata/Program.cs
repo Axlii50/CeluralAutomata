@@ -17,7 +17,7 @@ namespace OpenTk
         [STAThread]
         static void Main()
         {
-            new MainWindow().Run(60,0);
+            new MainWindow().Run(0,0);
         }
     }
 }

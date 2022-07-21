@@ -16,6 +16,8 @@ namespace OpenTk
     {
         public static float x_scaled;
         public static float y_scaled;
+        public static int HalfWidth;
+        public static int HalfHeight;
 
         public MainWindow() : base(1920, 1080,
             GraphicsMode.Default,
@@ -33,6 +35,7 @@ namespace OpenTk
         {
             base.OnResize(e);
             GL.Viewport(this.ClientRectangle);
+            //GL.Viewport(HalfWidth,HalfHeight,this.ClientRectangle.Width,this.ClientRectangle.Height);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
             GL.Ortho(0, 1000, 1000, 0, -1, 0);
@@ -44,8 +47,10 @@ namespace OpenTk
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
             //set x/y scaled values
-            x_scaled = 1000 / 1920f;
-            y_scaled = 1000 / 1080f;
+            x_scaled = this.ClientRectangle.Width / 1920f;
+            y_scaled = this.ClientRectangle.Height / 1080f;
+            HalfWidth = this.ClientRectangle.Width / 2;
+            HalfHeight = this.ClientRectangle.Height / 2;
 
             //initialize object of PredatorAndPray
             preyandpredator = new PAP();
@@ -70,7 +75,7 @@ namespace OpenTk
 
             if (e.Keyboard.IsKeyDown(Key.F))
             {
-
+                preyandpredator.Add();
             }
 
             if (e.Keyboard.IsKeyDown(Key.W))
@@ -84,6 +89,8 @@ namespace OpenTk
             base.OnUpdateFrame(e);
 
             //update all objects
+            //c is only for passing argument bcs its cant be null 
+            //var c = new Entity[1, 1];
             preyandpredator.Update(this.UpdateTime);
         }
 
