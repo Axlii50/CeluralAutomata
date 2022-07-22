@@ -82,7 +82,7 @@ namespace OpenTk.PrayAndPredators
                     //increas health by one 
                     this.health++;
                     //check for reproduction threshold
-                    if (health > 1000)
+                    if (health > 250)
                     {
                         //choose direction 
                         chooseDirection(out x_change, out y_change);
