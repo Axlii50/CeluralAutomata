@@ -18,7 +18,7 @@ namespace OpenTk.PrayAndPredators
     {
         private int x { get; set; }
         private int y { get; set; }
-        private int health { get; set; }
+        public int health { get; set; }
         public CreatureType Type { get; set; }
 
         private uint[] indices = {  // note that we start from 0!
@@ -40,8 +40,6 @@ namespace OpenTk.PrayAndPredators
             GL.NamedBufferData(_elementBufferObject, indices.Length * sizeof(uint), indices, BufferUsageHint.DynamicDraw);
         }
 
-
-
         public void Draw()
         {
             //bind vertex array of this specific object
@@ -52,6 +50,10 @@ namespace OpenTk.PrayAndPredators
 
         public void Update(double updateTime)
         {
+            int x_change = 0;
+            int y_change = 0;
+            int x_changed = 0;
+            int y_changed = 0;
             switch (this.Type)
             {
                 case CreatureType.Predator:
@@ -59,6 +61,17 @@ namespace OpenTk.PrayAndPredators
                     this.health--;
                     if (health == 0) this.Type = CreatureType.Empty;
 
+                    //choose direction 
+                    chooseDirection(out x_change, out y_change);
+                    x_changed = this.x + x_change;
+                    y_changed = this.y + y_change;
+                    if (x_changed > 0 && x_changed < PAP.width && y_changed > 0 && y_changed < PAP.height
+                           && PAP.animals[x_changed, y_changed].Type == CreatureType.Prey)
+                    {
+                        PAP.animals[x_changed, y_changed].Type = CreatureType.Predator;
+                        PAP.animals[x_changed, y_changed].health = 100;
+                    }
+                        move();
                     break;
 
                 case CreatureType.Prey:
@@ -67,12 +80,10 @@ namespace OpenTk.PrayAndPredators
                     //check for reproduction threshold
                     if (health > 1000)
                     {
-                        int x_change = 0;
-                        int y_change = 0;
                         //choose direction 
                         chooseDirection(out x_change, out y_change);
-                        int x_changed = this.x + x_change;
-                        int y_changed = this.y + y_change;
+                        x_changed = this.x + x_change;
+                        y_changed = this.y + y_change;
                         //check if cordinates are inside bounds and if targeted cell is empty
                         if (x_changed > 0 && x_changed < PAP.width && y_changed > 0 && y_changed < PAP.height
                             && PAP.animals[x_changed, y_changed].Type == CreatureType.Empty)
@@ -80,11 +91,9 @@ namespace OpenTk.PrayAndPredators
                             PAP.animals[x_changed, y_changed].Type = CreatureType.Prey;
                         }
                     }
+                    move();
                     break;
             }
-
-            if (this.Type != CreatureType.Empty)
-                move();
         }
 
         private void move()

@@ -90,6 +90,8 @@ namespace OpenTk
 
             //update all objects
             preyandpredator.Update(this.UpdateTime);
+
+            preyandpredator.Add();
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)

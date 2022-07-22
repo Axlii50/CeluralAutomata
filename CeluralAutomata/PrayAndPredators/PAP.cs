@@ -13,7 +13,7 @@ namespace OpenTk.PrayAndPredators
 
         public static Creature[,] animals;
 
-        public static int height = 200, width = 200;
+        public static int height = 400, width = 400;
 
         public void Init()
         {
@@ -27,14 +27,11 @@ namespace OpenTk.PrayAndPredators
                            "PrayAndPredators/shaders/shader_Prey.frag")
             };
 
+            //initialize all cells
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < width; x++)
                 {
-                    //if (x % 2 == 0)
-                    //    animals[x, y] = new Creature(x, y, CreatureType.Predator);
-                    //else
-                    //    animals[x, y] = new Creature(x, y, CreatureType.Prey);
                     animals[x, y] = new Creature(x, y, CreatureType.Empty);
                 }
             }
@@ -69,14 +66,21 @@ namespace OpenTk.PrayAndPredators
 
         public void Add()
         {
-            if (Program.rnd.Next(1, 100) > 50)
+            if (Program.rnd.Next(1, 100) > 80)
             {
                 int x = Program.rnd.Next(0, width - 1),
-                    y = Program.rnd.Next(0, height-1);
+                    y = Program.rnd.Next(0, height - 1);
                 if (Program.rnd.Next(1, 100) > 50)
+                {
+
                     PAP.animals[x, y].Type = CreatureType.Prey;
+                    PAP.animals[x, y].health = 0;
+                }
                 else
-                    PAP.animals[x, y].Type = CreatureType.Prey;
+                {
+                    PAP.animals[x, y].Type = CreatureType.Predator;
+                    PAP.animals[x, y].health = 100;
+                }
             }
         }
 
