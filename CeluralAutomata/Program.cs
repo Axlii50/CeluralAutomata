@@ -10,13 +10,15 @@ namespace OpenTk
     static class Program
     {
         //public static random object for general usage
-        public static Random rnd = new Random();
+        public static Random rnd;
         /// <summary>
         /// Główny punkt wejścia dla aplikacji.
         /// </summary>
         [STAThread]
         static void Main()
-        {
+        { 
+           rnd = new Random(Guid.NewGuid().GetHashCode());
+
             new MainWindow().Run(0,0);
         }
     }

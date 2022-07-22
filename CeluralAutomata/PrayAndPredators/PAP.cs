@@ -13,11 +13,6 @@ namespace OpenTk.PrayAndPredators
 
         public static Creature[,] animals;
 
-
-        //make array pre initialized on load event 
-        //every cell with 3 possible types : Prey Predator Empty
-        //to avoid creating constatnly buffers and binding data 
-
         public void Init()
         {
             animals = new Creature[100, 100];
@@ -34,10 +29,11 @@ namespace OpenTk.PrayAndPredators
             {
                 for (int x = 0; x < 100; x++)
                 {
-                    if (x % 2 == 0)
-                        animals[x, y] = new Creature(x, y, CreatureType.Predator);
-                    else
-                        animals[x, y] = new Creature(x, y, CreatureType.Prey);
+                    //if (x % 2 == 0)
+                    //    animals[x, y] = new Creature(x, y, CreatureType.Predator);
+                    //else
+                    //    animals[x, y] = new Creature(x, y, CreatureType.Prey);
+                    animals[x, y] = new Creature(x, y, CreatureType.Empty);
                 }
             }
         }
@@ -45,13 +41,13 @@ namespace OpenTk.PrayAndPredators
         public void Draw()
         {
             //draw all Entitis
-            _Shaders[1].Use();
+            _Shaders[0].Use();
 
             foreach (Creature animal in animals)
                 if(animal.Type == CreatureType.Predator)
                     animal?.Draw();
 
-            _Shaders[0].Use();
+            _Shaders[1].Use();
 
             foreach (Creature animal in animals)
                 if (animal.Type == CreatureType.Prey)
@@ -72,9 +68,9 @@ namespace OpenTk.PrayAndPredators
                 int x = Program.rnd.Next(0, 99),
                     y = Program.rnd.Next(0, 99);
                 if (Program.rnd.Next(1, 100) > 50)
-                    PAP.animals[x, y] = new Creature(x, y, CreatureType.Predator);
+                    PAP.animals[x, y].Type = CreatureType.Prey;
                 else
-                    PAP.animals[x, y] = new Creature(x, y, CreatureType.Prey);
+                    PAP.animals[x, y].Type = CreatureType.Prey;
             }
         }
 
