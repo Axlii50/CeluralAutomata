@@ -11,11 +11,16 @@ namespace OpenTk.PrayAndPredators
     {
         private shader[] _Shaders;
 
-        public static Entity[,] animals;
+        public static Creature[,] animals;
+
+
+        //make array pre initialized on load event 
+        //every cell with 3 possible types : Prey Predator Empty
+        //to avoid creating constatnly buffers and binding data 
 
         public void Init()
         {
-            animals = new Entity[250, 250];
+            animals = new Creature[100, 100];
 
             //load all needed shaders for all entites
             _Shaders = new shader[2] {
@@ -25,20 +30,16 @@ namespace OpenTk.PrayAndPredators
                            "PrayAndPredators/shaders/shader_Prey.frag")
             };
 
-            //test entitis 
-            //animals[0, 1] = new Predator(_Shaders[0], 0, 1);
-            //animals[0, 2] = new Predator(_Shaders[0], 0, 2);
-            //animals[0, 3] = new Predator(_Shaders[0], 0, 3);
-            //animals[0, 4] = new Predator(_Shaders[0], 0, 4);
-            //animals[0, 5] = new Predator(_Shaders[0], 0, 5);
-            //animals[0, 6] = new Predator(_Shaders[0], 0, 6);
-            //animals[2, 7] = new Prey(_Shaders[1], 2, 7);
-            //animals[2, 8] = new Prey(_Shaders[1], 2, 8);
-            //animals[2, 9] = new Prey(_Shaders[1], 2, 9);
-            //animals[2, 10] = new Prey(_Shaders[1], 2, 10);
-            //animals[2, 11] = new Prey(_Shaders[1], 2, 11);
-            //animals[2, 12] = new Prey(_Shaders[1], 2, 12);
-
+            for (int y = 0; y < 100; y++)
+            {
+                for (int x = 0; x < 100; x++)
+                {
+                    if (x % 2 == 0)
+                        animals[x, y] = new Creature(x, y, CreatureType.Predator);
+                    else
+                        animals[x, y] = new Creature(x, y, CreatureType.Prey);
+                }
+            }
         }
 
         public void Draw()
@@ -46,43 +47,41 @@ namespace OpenTk.PrayAndPredators
             //draw all Entitis
             _Shaders[1].Use();
 
-            foreach (Entity animal in animals)
-                if(animal is Prey)
+            foreach (Creature animal in animals)
+                if(animal.Type == CreatureType.Predator)
                     animal?.Draw();
 
             _Shaders[0].Use();
 
-            foreach (Entity animal in animals)
-                if (animal is Predator)
+            foreach (Creature animal in animals)
+                if (animal.Type == CreatureType.Prey)
                     animal?.Draw();
         }
 
         public void Update(double updateTime)
         {
             //update all Entitis
-            foreach (Entity animal in animals)
+            foreach (Creature animal in animals)
                 animal?.Update(updateTime);
-
-            
         }
 
         public void Add()
         {
             if (Program.rnd.Next(1, 100) > 50)
             {
-                int x = Program.rnd.Next(0, 199),
-                    y = Program.rnd.Next(0, 199);
+                int x = Program.rnd.Next(0, 99),
+                    y = Program.rnd.Next(0, 99);
                 if (Program.rnd.Next(1, 100) > 50)
-                    PAP.animals[x, y] = new Prey(this._Shaders[1], x-30, y-30);
+                    PAP.animals[x, y] = new Creature(x, y, CreatureType.Predator);
                 else
-                    PAP.animals[x, y] = new Predator(this._Shaders[0], x-30, y-30);
+                    PAP.animals[x, y] = new Creature(x, y, CreatureType.Prey);
             }
         }
 
         public void Clear()
         {
             //cleare data from all Entitis
-            foreach (Entity animal in animals)
+            foreach (Creature animal in animals)
                 animal?.Clear();
         }
     }

@@ -8,7 +8,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace OpenTk.PrayAndPredators
 {
-    class Prey : Entity
+    class Prey
     {
         public uint[] indices = {  // note that we start from 0!
             0, 1, 2,  // first triangle
@@ -19,91 +19,91 @@ namespace OpenTk.PrayAndPredators
         private int health;
         shader Shader;
 
-        public Prey(shader shader, int x, int y) : base()
-        {
-            this.x = x;
-            this.y = y;
-            this.Shader = shader;
+        //public Prey(shader shader, int x, int y) : base()
+        //{
+        //    this.x = x;
+        //    this.y = y;
+        //    this.Shader = shader;
 
-            GL.NamedBufferData(_vertexBufferObject, _vertices().Length * sizeof(float), _vertices(), BufferUsageHint.DynamicDraw);
+        //    GL.NamedBufferData(_vertexBufferObject, _vertices().Length * sizeof(float), _vertices(), BufferUsageHint.DynamicDraw);
 
-            GL.NamedBufferData(_elementBufferObject, indices.Length * sizeof(uint), indices, BufferUsageHint.DynamicDraw);
-        }
+        //    GL.NamedBufferData(_elementBufferObject, indices.Length * sizeof(uint), indices, BufferUsageHint.DynamicDraw);
+        //}
 
 
-        public override void Draw()
-        {
-            //Shader.Use();
-            //System.Diagnostics.Debug.WriteLine("test");
-            GL.BindVertexArray(_vertexArrayObject);
-            GL.DrawElements(BeginMode.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
-        }
+        //public override void Draw()
+        //{
+        //    //Shader.Use();
+        //    //System.Diagnostics.Debug.WriteLine("test");
+        //    GL.BindVertexArray(_vertexArrayObject);
+        //    GL.DrawElements(BeginMode.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
+        //}
 
         public int GetHealth() => health;
 
-        public override void Update(double updateTime)
-        {
-            //randomly choose in what direction it will move 50 percent for every direction
-            //TEMP
-            //PAP.animals[x_unscaled, y_unscaled] = null;
-            //System.Diagnostics.Debug.WriteLine("test1");
-            int chance = Program.rnd.Next(1, 100);
+        //public override void Update(double updateTime)
+        //{
+        //    //randomly choose in what direction it will move 50 percent for every direction
+        //    //TEMP
+        //    //PAP.animals[x_unscaled, y_unscaled] = null;
+        //    //System.Diagnostics.Debug.WriteLine("test1");
+        //    int chance = Program.rnd.Next(1, 100);
 
-            try
-            {
-                if (chance < 24 && x + 1 < 249)
-                {
-                    PAP.animals[x, y] = null;
-                    x++;
-                    PAP.animals[x + 1, y] = this;
-                }
-                else if (chance >= 24 && chance < 50 && x  - 1 > 0)
-                {
-                    PAP.animals[x, y] = null;
-                    x--;
-                    PAP.animals[x - 1, y] = this;
-                }
-                else if (chance >= 50 && chance < 75 && y + 1 < 249)
-                {
-                    PAP.animals[x, y] = null;
-                    y++;
-                    PAP.animals[x, y + 1] = this;
-                }
-                else if (chance >= 75 && y  - 1 > 0)
-                {
-                    PAP.animals[x, y] = null;
-                    y--;
-                    PAP.animals[x, y - 1] = this;
-                }
+        //    try
+        //    {
+        //        if (chance < 24 && x + 1 < 249)
+        //        {
+        //            PAP.animals[x, y] = null;
+        //            x++;
+        //            PAP.animals[x + 1, y] = this;
+        //        }
+        //        else if (chance >= 24 && chance < 50 && x  - 1 > 0)
+        //        {
+        //            PAP.animals[x, y] = null;
+        //            x--;
+        //            PAP.animals[x - 1, y] = this;
+        //        }
+        //        else if (chance >= 50 && chance < 75 && y + 1 < 249)
+        //        {
+        //            PAP.animals[x, y] = null;
+        //            y++;
+        //            PAP.animals[x, y + 1] = this;
+        //        }
+        //        else if (chance >= 75 && y  - 1 > 0)
+        //        {
+        //            PAP.animals[x, y] = null;
+        //            y--;
+        //            PAP.animals[x, y - 1] = this;
+        //        }
 
 
-                health += 1;
+        //        health += 1;
 
-                if (health >= 75)
-                {
-                    health = 0;
-                    if (x + 1 < 250)
-                        PAP.animals[x + 1, y] = new Prey(this.Shader, x + 1, y);
-                    else if (x - 1 > 0)
-                        PAP.animals[x - 1, y] = new Prey(this.Shader, x - 1, y);
-                }
-            }
-            catch (IndexOutOfRangeException e)
-            {
-                System.Diagnostics.Debug.WriteLine(x + ":" + y);
-                PAP.animals[x, y] = null;
-            }
-            //TODO when cell moves, moves it within array that contains all Entitis 
+        //        if (health >= 75)
+        //        {
+        //            health = 0;
+        //            if (x + 1 < 250)
+        //                PAP.animals[x + 1, y] = new Prey(this.Shader, x + 1, y);
+        //            else if (x - 1 > 0)
+        //                PAP.animals[x - 1, y] = new Prey(this.Shader, x - 1, y);
+        //        }
+        //    }
+        //    catch (IndexOutOfRangeException e)
+        //    {
+        //        System.Diagnostics.Debug.WriteLine(x + ":" + y);
+        //        PAP.animals[x, y] = null;
+        //    }
+        //    //TODO when cell moves, moves it within array that contains all Entitis 
 
-            //TODO when update reduce health by some Amount
+        //    //TODO when update reduce health by some Amount
 
-            //Update data in buffer
-            GL.NamedBufferSubData(_vertexBufferObject, IntPtr.Zero, _vertices().Length * sizeof(float), _vertices());
-            //GL.NamedBufferData(_vertexBufferObject, _vertices().Length * sizeof(float), _vertices(), BufferUsageHint.DynamicDraw);
+        //    //Update data in buffer
+        //    GL.NamedBufferSubData(_vertexBufferObject, IntPtr.Zero, _vertices().Length * sizeof(float), _vertices());
+        //    //GL.NamedBufferData(_vertexBufferObject, _vertices().Length * sizeof(float), _vertices(), BufferUsageHint.DynamicDraw);
 
-            GL.NamedBufferSubData(_elementBufferObject, IntPtr.Zero, indices.Length * sizeof(uint), indices);
-            //GL.NamedBufferData(_elementBufferObject, indices.Length * sizeof(uint), indices, BufferUsageHint.DynamicDraw);
-        }
+        //    GL.NamedBufferSubData(_elementBufferObject, IntPtr.Zero, indices.Length * sizeof(uint), indices);
+        //    //GL.NamedBufferData(_elementBufferObject, indices.Length * sizeof(uint), indices, BufferUsageHint.DynamicDraw);
+        //}
 
         //return vertices bassed on x and y 
         private float[] _vertices() => new float[]{

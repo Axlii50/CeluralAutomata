@@ -50,11 +50,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bufforable.cs" />
-    <Compile Include="Entity.cs" />
     <Compile Include="Interfaces\Deletable.cs" />
     <Compile Include="Interfaces\Drawable.cs" />
     <Compile Include="Interfaces\Program.cs" />
     <Compile Include="Interfaces\Updatable.cs" />
+    <Compile Include="PrayAndPredators\Creature.cs" />
     <Compile Include="PrayAndPredators\PAP.cs" />
     <Compile Include="PrayAndPredators\Predator.cs" />
     <Compile Include="PrayAndPredators\Prey.cs" />
