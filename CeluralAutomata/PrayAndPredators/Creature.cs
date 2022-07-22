@@ -1,4 +1,5 @@
 ﻿using OpenTk.Interfaces;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
@@ -46,6 +47,9 @@ namespace OpenTk.PrayAndPredators
             GL.BindVertexArray(_vertexArrayObject);
             //draw binded array
             GL.DrawElements(BeginMode.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
+
+
+            //System.Diagnostics.Debug.Write("test");
         }
 
         public void Update(double updateTime)
@@ -152,10 +156,11 @@ namespace OpenTk.PrayAndPredators
         }
 
         private float[] _vertices() => new float[]{
-            x * MainWindow.x_scaled,y * MainWindow.y_scaled,0, //left top
-            x * MainWindow.x_scaled + MainWindow.x_scaled,y * MainWindow.y_scaled,0, //right top
-            x * MainWindow.x_scaled,y * MainWindow.y_scaled + MainWindow.y_scaled,0, // left bottom
-            x * MainWindow.x_scaled+ MainWindow.x_scaled,y * MainWindow.y_scaled + MainWindow.y_scaled,0, // right bottom
+            (x * MainWindow.x_scaled) - 300,(y * MainWindow.y_scaled) - 300,0, //left top
+            (x * MainWindow.x_scaled + MainWindow.x_scaled)  - 300,(y * MainWindow.y_scaled) - 300,0, //right top
+            (x * MainWindow.x_scaled)  - 300,(y * MainWindow.y_scaled + MainWindow.y_scaled) - 300,0, // left bottom
+            (x * MainWindow.x_scaled+ MainWindow.x_scaled)  - 300,(y * MainWindow.y_scaled + MainWindow.y_scaled) - 300,0, // right bottom
             };
+
     }
 }

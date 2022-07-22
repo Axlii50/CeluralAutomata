@@ -16,6 +16,8 @@ namespace OpenTk
     {
         public static float x_scaled;
         public static float y_scaled;
+        public static float HalfWidth;
+        public static float HalfHeigth;
 
         public MainWindow() : base(1920, 1080,
             GraphicsMode.Default,
@@ -33,7 +35,7 @@ namespace OpenTk
         {
             base.OnResize(e);
             GL.Viewport(this.ClientRectangle);
-            //GL.Viewport(0, 0, this.ClientRectangle.Width, this.ClientRectangle.Height);
+            GL.Viewport(0, 0, this.ClientRectangle.Width, this.ClientRectangle.Height);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
             GL.Ortho(ClientRectangle.X,
@@ -41,6 +43,7 @@ namespace OpenTk
                 ClientRectangle.Y + ClientRectangle.Height,
                 ClientRectangle.Y,
                 -1, 1);
+            //GL.LoadMatrix(_camera.GetMatrixAsFloatArray(_camera.GetProjection()));
         }
 
         private PAP preyandpredator;
@@ -48,9 +51,12 @@ namespace OpenTk
         {
             //GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
+            HalfWidth = this.ClientRectangle.Width / 2f;
+            HalfHeigth = this.ClientRectangle.Height / 2f;
+
             //set x/y scaled values
-            x_scaled = this.ClientRectangle.Width / 1920f;
-            y_scaled = this.ClientRectangle.Height / 1080f;
+            x_scaled = /*this.ClientRectangle.Width / 1920f; */1;
+            y_scaled = /*this.ClientRectangle.Height / 1061f;*/1;
 
             //initialize object of PredatorAndPray
             preyandpredator = new PAP();
@@ -75,7 +81,7 @@ namespace OpenTk
 
             if (e.Keyboard.IsKeyDown(Key.F))
             {
-                preyandpredator.Add();
+
             }
 
             if (e.Keyboard.IsKeyDown(Key.W))

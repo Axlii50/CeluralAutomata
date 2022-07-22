@@ -1,4 +1,5 @@
 ﻿using OpenTk.Interfaces;
+using OpenTK;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace OpenTk.PrayAndPredators
 
         public static Creature[,] animals;
 
-        public static int height = 400, width = 400;
+        public static int height = 600, width = 600;
 
         public void Init()
         {
@@ -45,7 +46,7 @@ namespace OpenTk.PrayAndPredators
 
             //draw all predators
             foreach (Creature animal in animals)
-                if(animal.Type == CreatureType.Predator)
+                if (animal.Type == CreatureType.Predator)
                     animal?.Draw();
 
             //use shader for prey
