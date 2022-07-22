@@ -80,8 +80,6 @@ namespace OpenTk
 
             if (e.Keyboard.IsKeyDown(Key.W))
             {
-                //GL.Viewport(x += 10, Y +=10 , this.ClientRectangle.Width, this.ClientRectangle.Height);
-                //Program.rnd = new Random(Guid.NewGuid().GetHashCode());
                 Program.rnd = new Random(DateTime.Now.Millisecond);
             }
         }
@@ -91,10 +89,7 @@ namespace OpenTk
             base.OnUpdateFrame(e);
 
             //update all objects
-            //c is only for passing argument bcs its cant be null 
-            //var c = new Entity[1, 1];
             preyandpredator.Update(this.UpdateTime);
-            Program.rnd = new Random(DateTime.Now.Millisecond);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)

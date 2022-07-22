@@ -56,8 +56,6 @@
     <Compile Include="Interfaces\Updatable.cs" />
     <Compile Include="PrayAndPredators\Creature.cs" />
     <Compile Include="PrayAndPredators\PAP.cs" />
-    <Compile Include="PrayAndPredators\Predator.cs" />
-    <Compile Include="PrayAndPredators\Prey.cs" />
     <Compile Include="shader.cs" />
     <Compile Include="MainWindow.cs" />
     <Compile Include="Program.cs" />

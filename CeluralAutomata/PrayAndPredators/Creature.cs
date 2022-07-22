@@ -16,9 +16,10 @@ namespace OpenTk.PrayAndPredators
     }
     class Creature : Bufforable, Drawable, Updatable
     {
-        private int x;
-        private int y;
-        private int health;
+        private int x { get; set; }
+        private int y { get; set; }
+        private int health { get; set; }
+        public CreatureType Type { get; set; }
 
         private uint[] indices = {  // note that we start from 0!
             0, 1, 2,  // first triangle
@@ -31,6 +32,7 @@ namespace OpenTk.PrayAndPredators
             this.y = y;
             this.health = 0;
 
+            //set type
             this.Type = type;
 
             GL.NamedBufferData(_vertexBufferObject, _vertices().Length * sizeof(float), _vertices(), BufferUsageHint.DynamicDraw);
@@ -38,7 +40,7 @@ namespace OpenTk.PrayAndPredators
             GL.NamedBufferData(_elementBufferObject, indices.Length * sizeof(uint), indices, BufferUsageHint.DynamicDraw);
         }
 
-        public CreatureType Type { get; set; }
+
 
         public void Draw()
         {
@@ -60,29 +62,24 @@ namespace OpenTk.PrayAndPredators
                     break;
 
                 case CreatureType.Prey:
-
+                    //increas health by one 
                     this.health++;
+                    //check for reproduction threshold
                     if (health > 1000)
                     {
                         int x_change = 0;
                         int y_change = 0;
-
+                        //choose direction 
                         chooseDirection(out x_change, out y_change);
                         int x_changed = this.x + x_change;
                         int y_changed = this.y + y_change;
-                        if (x_changed > 0 && x_changed < PAP.widht && y_changed > 0 && y_changed < PAP.height
+                        //check if cordinates are inside bounds and if targeted cell is empty
+                        if (x_changed > 0 && x_changed < PAP.width && y_changed > 0 && y_changed < PAP.height
                             && PAP.animals[x_changed, y_changed].Type == CreatureType.Empty)
                         {
-                            do
-                            {
-                                x_changed = this.x + x_change;
-                                y_changed = this.y + y_change;
-                                chooseDirection(out x_change, out y_change);
-                            } while (PAP.animals[x_changed, y_changed].Type != CreatureType.Empty);
                             PAP.animals[x_changed, y_changed].Type = CreatureType.Prey;
                         }
                     }
-
                     break;
             }
 
@@ -92,8 +89,6 @@ namespace OpenTk.PrayAndPredators
 
         private void move()
         {
-            //int chance = Program.rnd.Next(1, 100);
-
             int x_change = 0;
             int y_change = 0;
 
@@ -101,7 +96,7 @@ namespace OpenTk.PrayAndPredators
 
             int x_changed = this.x + x_change;
             int y_changed = this.y + y_change;
-            if if (x_changed > 0 && x_changed < PAP.widht && y_changed > 0 && y_changed < PAP.height)
+            if (x_changed > 0 && x_changed < PAP.width && y_changed > 0 && y_changed < PAP.height)
             {
                 #region Cancel
                 if (PAP.animals[x_changed, y_changed].Type != CreatureType.Empty) return;
@@ -125,91 +120,11 @@ namespace OpenTk.PrayAndPredators
                 //PAP.animals[x, y].Type = temp_t; 
                 #endregion
             }
-
-
-            #region MyRegion
-            //if (chance < 24 && x + 1 < 99 && PAP.animals[x + 1, y].Type == CreatureType.Empty)
-            //{
-            //    PAP.animals[x + 1, y].health = this.health;
-            //    PAP.animals[x, y].health = 0;
-            //    PAP.animals[x + 1, y].Type = this.Type;
-            //    PAP.animals[x, y].Type = CreatureType.Empty;
-            //}
-            //else if (chance >= 25 && chance < 50 && x - 1 > 0 && PAP.animals[x - 1, y].Type == CreatureType.Empty)
-            //{
-            //    PAP.animals[x - 1, y].health = this.health;
-            //    PAP.animals[x, y].health = 0;
-            //    PAP.animals[x - 1, y].Type = this.Type;
-            //    PAP.animals[x, y].Type = CreatureType.Empty;
-            //}
-            //else if (chance >= 50 && chance < 75 && y + 1 < 99 && PAP.animals[x, y + 1].Type == CreatureType.Empty)
-            //{
-            //    PAP.animals[x, y + 1].health = this.health;
-            //    PAP.animals[x, y].health = 0;
-            //    PAP.animals[x, y + 1].Type = this.Type;
-            //    PAP.animals[x, y].Type = CreatureType.Empty;
-            //}
-            //else if (chance >= 75 && y - 1 > 0 && PAP.animals[x, y - 1].Type == CreatureType.Empty)
-            //{
-            //    PAP.animals[x, y - 1].health = this.health;
-            //    PAP.animals[x, y].health = 0;
-            //    PAP.animals[x, y - 1].Type = this.Type;
-            //    PAP.animals[x, y].Type = CreatureType.Empty;
-            //}
-            #endregion
-            #region MyRegion
-            //CreatureType temp_t;
-            //int temp_h = 0;
-            //if (chance < 24 && x + 1 < 99)
-            //{
-            //    temp_t = PAP.animals[x + 1, y].Type;
-            //    temp_h = PAP.animals[x + 1, y].health;
-
-            //    PAP.animals[x + 1, y].health = this.health;
-            //    PAP.animals[x + 1, y].Type = this.Type;
-
-            //    PAP.animals[x, y].health = temp_h;
-            //    PAP.animals[x, y].Type = temp_t;
-            //}
-            //else if (chance >= 24 && chance < 50 && x - 1 > 0)
-            //{
-            //    temp_t = PAP.animals[x - 1, y].Type;
-            //    temp_h = PAP.animals[x - 1, y].health;
-
-            //    PAP.animals[x - 1, y].health = this.health;
-            //    PAP.animals[x - 1, y].Type = this.Type;
-
-            //    PAP.animals[x, y].health = temp_h;
-            //    PAP.animals[x, y].Type = temp_t;
-            //}
-            //else if (chance >= 50 && chance < 75 && y + 1 < 99)
-            //{
-            //    temp_t = PAP.animals[x, y + 1].Type;
-            //    temp_h = PAP.animals[x, y + 1].health;
-
-            //    PAP.animals[x, y+1].health = this.health;
-            //    PAP.animals[x, y + 1].Type = this.Type;
-
-            //    PAP.animals[x, y].health = temp_h;
-            //    PAP.animals[x, y].Type = temp_t;
-            //}
-            //else if (chance >= 75 && y - 1 > 0)
-            //{
-            //    temp_t = PAP.animals[x, y - 1].Type;
-            //    temp_h = PAP.animals[x, y - 1].health;
-
-            //    PAP.animals[x, y - 1].health = this.health;
-            //    PAP.animals[x, y - 1].Type = this.Type;
-
-            //    PAP.animals[x, y].health = temp_h;
-            //    PAP.animals[x, y].Type = temp_t;
-            //} 
-            #endregion
         }
 
         private void chooseDirection(out int x, out int y)
         {
-            if (Program.rnd.Next(1, 101) > 50)
+            if (Program.rnd.Next(1, 102) >= 51)
             {
                 y = 0;
                 if (Program.rnd.Next(1, 102) <= 51)
