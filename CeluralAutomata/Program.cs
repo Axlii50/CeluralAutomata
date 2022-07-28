@@ -19,7 +19,7 @@ namespace OpenTk
         { 
            rnd = new Random(Guid.NewGuid().GetHashCode());
 
-            new MainWindow().Run(0,0);
+           new MainWindow().Run();
         }
     }
 }

@@ -10,9 +10,9 @@ namespace OpenTk
     public class Bufforable : Interfaces.Deletable
     {
         //this and class created with inheritance of this can acces this variables
-        private protected int _elementBufferObject;
-        private protected int _vertexBufferObject;
-        private protected int _vertexArrayObject;
+        public int _elementBufferObject;
+        public int _vertexBufferObject;
+        public int _vertexArrayObject;
 
         public Bufforable()
         {
@@ -24,7 +24,7 @@ namespace OpenTk
             _vertexArrayObject = GL.GenVertexArray();
             //bind object
             GL.BindVertexArray(_vertexArrayObject);
-            
+
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
             GL.EnableVertexAttribArray(0);
             //create buffer for element buffer obejct

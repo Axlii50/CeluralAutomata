@@ -1,5 +1,6 @@
 ﻿using OpenTk.Interfaces;
 using OpenTK;
+using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,10 @@ namespace OpenTk.PrayAndPredators
 {
     internal class PAP : OpenTk.Interfaces.Program
     {
-        private shader[] _Shaders;
+        public Bufforable Predatorbuffor;
+        public Bufforable Preybuffor;
+
+        public shader[] _Shaders;
 
         public static Creature[,] animals;
 
@@ -19,6 +23,9 @@ namespace OpenTk.PrayAndPredators
         public void Init()
         {
             animals = new Creature[width, height];
+
+            Predatorbuffor = new Bufforable();
+            Preybuffor = new Bufforable();
 
             //load all needed shaders for all entites
             _Shaders = new shader[2] {
@@ -40,29 +47,157 @@ namespace OpenTk.PrayAndPredators
 
         public void Draw()
         {
-            //draw all Entitis
-            //use shader for predator
-            _Shaders[0].Use();
-
-            //draw all predators
-            foreach (Creature animal in animals)
-                if (animal.Type == CreatureType.Predator)
-                    animal?.Draw();
-
-            //use shader for prey
             _Shaders[1].Use();
+            GL.BindVertexArray(Preybuffor._vertexArrayObject);
+            GL.DrawElements(BeginMode.Triangles, indicies_prey, DrawElementsType.UnsignedInt, 0);
 
-            //draw all preys
-            foreach (Creature animal in animals)
-                if (animal.Type == CreatureType.Prey)
-                    animal?.Draw();
+            _Shaders[0].Use();
+            GL.BindVertexArray(Predatorbuffor._vertexArrayObject);
+            GL.DrawElements(BeginMode.Triangles, indicies_predator, DrawElementsType.UnsignedInt,0);
         }
+
+        int indicies_predator = 0;
+        int indicies_prey = 0;
 
         public void Update(double updateTime)
         {
             //update all Entitis
+
+            int predators = 0;
+            int prey = 0;
+
             foreach (Creature animal in animals)
                 animal?.Update(updateTime);
+
+            foreach (Creature animal in animals)
+            {
+                if (animal.Type == CreatureType.Predator)
+                {
+                    predators++;
+                }
+                else if (animal.Type == CreatureType.Prey)
+                {
+                    prey++;
+                }
+            }
+
+            uint[] list_Indicies_predator = new uint[predators * 6];
+            float[] list_Vertex_predator = new float[predators * 12];
+            uint[] list_Indicies_prey = new uint[prey * 6];
+            float[] list_Vertex_prey = new float[prey * 12];
+
+            prey = 0;
+            predators = 0;
+            uint[] temp_ui = null;
+            float[] temp_f = null;
+            int index = 0;
+            foreach (Creature animal in animals)
+            {
+                temp_ui = null;
+                temp_f = null;
+                index = 0;
+                if (animal.Type == CreatureType.Predator && list_Indicies_predator.Length != 0 && predators * 6 <= list_Indicies_predator.Length)
+                {
+                    index = predators * 6;
+                    temp_ui = animal.Indices((uint)(predators * 4));
+                    list_Indicies_predator[index] = temp_ui[0];
+                    list_Indicies_predator[index + 1] = temp_ui[1];
+                    list_Indicies_predator[index + 2] = temp_ui[2];
+                    list_Indicies_predator[index + 3] = temp_ui[3];
+                    list_Indicies_predator[index + 4] = temp_ui[4];
+                    list_Indicies_predator[index + 5] = temp_ui[5];
+
+                    index = predators * 12;
+                    temp_f = animal._vertices();
+                    list_Vertex_predator[index] = temp_f[0];
+                    list_Vertex_predator[index + 1] = temp_f[1];
+                    list_Vertex_predator[index + 2] = temp_f[2];
+                    list_Vertex_predator[index + 3] = temp_f[3];
+                    list_Vertex_predator[index + 4] = temp_f[4];
+                    list_Vertex_predator[index + 5] = temp_f[5];
+                    list_Vertex_predator[index + 6] = temp_f[6];
+                    list_Vertex_predator[index + 7] = temp_f[7];
+                    list_Vertex_predator[index + 8] = temp_f[8];
+                    list_Vertex_predator[index + 9] = temp_f[9];
+                    list_Vertex_predator[index + 10] = temp_f[10];
+                    list_Vertex_predator[index + 11] = temp_f[11];
+                    predators++;
+                }
+                if (animal.Type == CreatureType.Prey && list_Indicies_prey.Length != 0 && prey * 6 <= list_Indicies_prey.Length)
+                {
+                    index = prey * 6;
+                    temp_ui = animal.Indices((uint)(prey * 4));
+
+                    list_Indicies_prey[index] = temp_ui[0];
+                    list_Indicies_prey[index + 1] = temp_ui[1];
+                    list_Indicies_prey[index + 2] = temp_ui[2];
+                    list_Indicies_prey[index + 3] = temp_ui[3];
+                    list_Indicies_prey[index + 4] = temp_ui[4];
+                    list_Indicies_prey[index + 5] = temp_ui[5];
+
+                    index = prey * 12;
+                    temp_f = animal._vertices();
+                    list_Vertex_prey[index] = temp_f[0];
+                    list_Vertex_prey[index + 1] = temp_f[1];
+                    list_Vertex_prey[index + 2] = temp_f[2];
+                    list_Vertex_prey[index + 3] = temp_f[3];
+                    list_Vertex_prey[index + 4] = temp_f[4];
+                    list_Vertex_prey[index + 5] = temp_f[5];
+                    list_Vertex_prey[index + 6] = temp_f[6];
+                    list_Vertex_prey[index + 7] = temp_f[7];
+                    list_Vertex_prey[index + 8] = temp_f[8];
+                    list_Vertex_prey[index + 9] = temp_f[9];
+                    list_Vertex_prey[index + 10] = temp_f[10];
+                    list_Vertex_prey[index + 11] = temp_f[11];
+                    prey++;
+                }
+            }
+
+            this.indicies_predator = predators * 6;
+            this.indicies_prey = prey * 6;
+
+            //learn how to use subdata
+            //GL.NamedBufferSubData(Predatorbuffor._vertexBufferObject,
+            //     IntPtr.Zero,
+            //     list_Vertex_predator.Length * sizeof(float),
+            //     list_Vertex_predator
+            //     );
+            //GL.NamedBufferSubData(Predatorbuffor._elementBufferObject,
+            //    IntPtr.Zero,
+            //    list_Indicies_predator.Length * sizeof(uint),
+            //    list_Indicies_predator
+            //    );
+
+            //GL.NamedBufferSubData(Preybuffor._vertexBufferObject,
+            //     IntPtr.Zero,
+            //     list_Vertex_prey.Length * sizeof(float),
+            //     list_Vertex_prey
+            //     );
+
+            //GL.NamedBufferSubData(Preybuffor._elementBufferObject,
+            //     IntPtr.Zero,
+            //     list_Indicies_prey.Length * sizeof(uint),
+            //     list_Indicies_prey
+            //     );
+            GL.NamedBufferData(Predatorbuffor._vertexBufferObject,
+                list_Vertex_predator.Length * sizeof(float),
+                list_Vertex_predator.ToArray(),
+                BufferUsageHint.StreamDraw);
+
+            GL.NamedBufferData(Predatorbuffor._elementBufferObject,
+                list_Indicies_predator.Length * sizeof(uint),
+                list_Indicies_predator.ToArray(),
+                BufferUsageHint.StreamDraw);
+
+            GL.NamedBufferData(Preybuffor._vertexBufferObject,
+                list_Vertex_prey.Length * sizeof(float),
+                list_Vertex_prey.ToArray(),
+                BufferUsageHint.StreamDraw);
+
+            GL.NamedBufferData(Preybuffor._elementBufferObject,
+                list_Indicies_prey.Length * sizeof(uint),
+                list_Indicies_prey.ToArray(),
+                BufferUsageHint.StreamDraw);
         }
 
         public void Add()
@@ -87,9 +222,9 @@ namespace OpenTk.PrayAndPredators
 
         public void Clear()
         {
-            //cleare data from all Entitis
-            foreach (Creature animal in animals)
-                animal?.Clear();
+            ////cleare data from all Entitis
+            Predatorbuffor.Clear();
+            Preybuffor.Clear();
         }
     }
 }

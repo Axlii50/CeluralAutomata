@@ -81,12 +81,11 @@ namespace OpenTk
 
             if (e.Keyboard.IsKeyDown(Key.F))
             {
-
+                //preyandpredator.Add();
             }
 
             if (e.Keyboard.IsKeyDown(Key.W))
             {
-                Program.rnd = new Random(DateTime.Now.Millisecond);
             }
         }
 
@@ -111,6 +110,7 @@ namespace OpenTk
             preyandpredator.Draw();
 
             //swap buffers
+            //GL.Flush();
             SwapBuffers();
         }
     }

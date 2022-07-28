@@ -15,7 +15,7 @@ namespace OpenTk.PrayAndPredators
         Predator,
         Empty
     }
-    class Creature : Bufforable, Drawable, Updatable
+    class Creature : Updatable
     {
         private int x { get; set; }
         private int y { get; set; }
@@ -27,6 +27,12 @@ namespace OpenTk.PrayAndPredators
             2, 1, 3    // second triangle
          };
 
+        public uint[] Indices(uint offset) => new uint[]
+        {
+            offset , offset + 1, offset + 2,
+            offset + 2, offset + 1, offset + 3
+        };
+
         public Creature(int x, int y, CreatureType type = CreatureType.Empty) : base()
         {
             this.x = x;
@@ -36,20 +42,9 @@ namespace OpenTk.PrayAndPredators
             //set type
             this.Type = type;
 
-            GL.NamedBufferData(_vertexBufferObject, _vertices().Length * sizeof(float), _vertices(), BufferUsageHint.DynamicDraw);
+            //GL.NamedBufferData(_vertexBufferObject, _vertices().Length * sizeof(float), _vertices(), BufferUsageHint.DynamicDraw);
 
-            GL.NamedBufferData(_elementBufferObject, indices.Length * sizeof(uint), indices, BufferUsageHint.DynamicDraw);
-        }
-
-        public void Draw()
-        {
-            //bind vertex array of this specific object
-            GL.BindVertexArray(_vertexArrayObject);
-            //draw binded array
-            GL.DrawElements(BeginMode.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
-
-
-            //System.Diagnostics.Debug.Write("test");
+            //GL.NamedBufferData(_elementBufferObject, indices.Length * sizeof(uint), indices, BufferUsageHint.DynamicDraw);
         }
 
         public void Update(double updateTime)
@@ -75,7 +70,7 @@ namespace OpenTk.PrayAndPredators
                         PAP.animals[x_changed, y_changed].Type = CreatureType.Predator;
                         PAP.animals[x_changed, y_changed].health = 100;
                     }
-                        move();
+                    move();
                     break;
 
                 case CreatureType.Prey:
@@ -105,7 +100,7 @@ namespace OpenTk.PrayAndPredators
             int x_change = 0;
             int y_change = 0;
 
-            chooseDirection(out x_change,out y_change);
+            chooseDirection(out x_change, out y_change);
 
             int x_changed = this.x + x_change;
             int y_changed = this.y + y_change;
@@ -155,12 +150,17 @@ namespace OpenTk.PrayAndPredators
             }
         }
 
-        private float[] _vertices() => new float[]{
-            (x * MainWindow.x_scaled) - 300,(y * MainWindow.y_scaled) - 300,0, //left top
-            (x * MainWindow.x_scaled + MainWindow.x_scaled)  - 300,(y * MainWindow.y_scaled) - 300,0, //right top
-            (x * MainWindow.x_scaled)  - 300,(y * MainWindow.y_scaled + MainWindow.y_scaled) - 300,0, // left bottom
-            (x * MainWindow.x_scaled+ MainWindow.x_scaled)  - 300,(y * MainWindow.y_scaled + MainWindow.y_scaled) - 300,0, // right bottom
-            };
+        public float[] _vertices()
+        {
+            float xc = (x * MainWindow.x_scaled);
+            float yc = (y * MainWindow.y_scaled);
 
+            return new float[]{
+            xc - 300,(yc) - 300,0, //left top
+            (xc + MainWindow.x_scaled) - 300,yc - 300,0, //right top
+            xc  - 300,(yc + MainWindow.y_scaled) - 300,0, // left bottom
+            (xc+ MainWindow.x_scaled)  - 300,(yc + MainWindow.y_scaled) - 300,0, // right bottom
+            };
+        }
     }
 }
