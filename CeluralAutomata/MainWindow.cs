@@ -43,7 +43,6 @@ namespace OpenTk
                 ClientRectangle.Y + ClientRectangle.Height,
                 ClientRectangle.Y,
                 -1, 1);
-            //GL.LoadMatrix(_camera.GetMatrixAsFloatArray(_camera.GetProjection()));
         }
 
         private PAP preyandpredator;
@@ -86,6 +85,7 @@ namespace OpenTk
 
             if (e.Keyboard.IsKeyDown(Key.W))
             {
+
             }
         }
 

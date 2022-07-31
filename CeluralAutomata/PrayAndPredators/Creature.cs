@@ -22,11 +22,6 @@ namespace OpenTk.PrayAndPredators
         public int health { get; set; }
         public CreatureType Type { get; set; }
 
-        private uint[] indices = {  // note that we start from 0!
-            0, 1, 2,  // first triangle
-            2, 1, 3    // second triangle
-         };
-
         public uint[] Indices(uint offset) => new uint[]
         {
             offset , offset + 1, offset + 2,
@@ -41,10 +36,6 @@ namespace OpenTk.PrayAndPredators
 
             //set type
             this.Type = type;
-
-            //GL.NamedBufferData(_vertexBufferObject, _vertices().Length * sizeof(float), _vertices(), BufferUsageHint.DynamicDraw);
-
-            //GL.NamedBufferData(_elementBufferObject, indices.Length * sizeof(uint), indices, BufferUsageHint.DynamicDraw);
         }
 
         public void Update(double updateTime)
@@ -57,7 +48,7 @@ namespace OpenTk.PrayAndPredators
             {
                 case CreatureType.Predator:
 
-                    this.health--;
+                    --this.health;
                     if (health == 0) this.Type = CreatureType.Empty;
 
                     //choose direction 
@@ -75,7 +66,7 @@ namespace OpenTk.PrayAndPredators
 
                 case CreatureType.Prey:
                     //increas health by one 
-                    this.health++;
+                    ++this.health;
                     //check for reproduction threshold
                     if (health > 250)
                     {
@@ -88,6 +79,7 @@ namespace OpenTk.PrayAndPredators
                             && PAP.animals[x_changed, y_changed].Type == CreatureType.Empty)
                         {
                             PAP.animals[x_changed, y_changed].Type = CreatureType.Prey;
+                            this.health = 0;
                         }
                     }
                     move();
@@ -132,18 +124,21 @@ namespace OpenTk.PrayAndPredators
 
         private void chooseDirection(out int x, out int y)
         {
-            if (Program.rnd.Next(1, 102) >= 51)
+            int chance = Program.rnd.Next(1, 102);
+            if (chance >= 51)
             {
+                chance = Program.rnd.Next(1, 102);
                 y = 0;
-                if (Program.rnd.Next(1, 102) <= 51)
+                if (chance <= 51)
                     x = 1;
                 else
                     x = -1;
             }
             else
             {
+                chance = Program.rnd.Next(1, 102);
                 x = 0;
-                if (Program.rnd.Next(1, 102) <= 51)
+                if (chance <= 51)
                     y = 1;
                 else
                     y = -1;

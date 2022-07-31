@@ -61,14 +61,14 @@ namespace OpenTk.PrayAndPredators
 
         public void Update(double updateTime)
         {
-            //update all Entitis
-
             int predators = 0;
             int prey = 0;
-
+            
+            //update all entitis
             foreach (Creature animal in animals)
                 animal?.Update(updateTime);
 
+            //count all entitis of each type
             foreach (Creature animal in animals)
             {
                 if (animal.Type == CreatureType.Predator)
@@ -81,6 +81,7 @@ namespace OpenTk.PrayAndPredators
                 }
             }
 
+            //prepare all needed arrays of specif length
             uint[] list_Indicies_predator = new uint[predators * 6];
             float[] list_Vertex_predator = new float[predators * 12];
             uint[] list_Indicies_prey = new uint[prey * 6];
@@ -91,6 +92,7 @@ namespace OpenTk.PrayAndPredators
             uint[] temp_ui = null;
             float[] temp_f = null;
             int index = 0;
+            //prepare all arrays with indices and vertex
             foreach (Creature animal in animals)
             {
                 temp_ui = null;
@@ -99,6 +101,7 @@ namespace OpenTk.PrayAndPredators
                 if (animal.Type == CreatureType.Predator && list_Indicies_predator.Length != 0 && predators * 6 <= list_Indicies_predator.Length)
                 {
                     index = predators * 6;
+                    //set indicies of predator 
                     temp_ui = animal.Indices((uint)(predators * 4));
                     list_Indicies_predator[index] = temp_ui[0];
                     list_Indicies_predator[index + 1] = temp_ui[1];
@@ -109,6 +112,7 @@ namespace OpenTk.PrayAndPredators
 
                     index = predators * 12;
                     temp_f = animal._vertices();
+                    //set vertex of predator
                     list_Vertex_predator[index] = temp_f[0];
                     list_Vertex_predator[index + 1] = temp_f[1];
                     list_Vertex_predator[index + 2] = temp_f[2];
@@ -127,7 +131,7 @@ namespace OpenTk.PrayAndPredators
                 {
                     index = prey * 6;
                     temp_ui = animal.Indices((uint)(prey * 4));
-
+                    //set indicies of prey
                     list_Indicies_prey[index] = temp_ui[0];
                     list_Indicies_prey[index + 1] = temp_ui[1];
                     list_Indicies_prey[index + 2] = temp_ui[2];
@@ -137,6 +141,7 @@ namespace OpenTk.PrayAndPredators
 
                     index = prey * 12;
                     temp_f = animal._vertices();
+                    //set vertex of prey
                     list_Vertex_prey[index] = temp_f[0];
                     list_Vertex_prey[index + 1] = temp_f[1];
                     list_Vertex_prey[index + 2] = temp_f[2];
@@ -179,6 +184,9 @@ namespace OpenTk.PrayAndPredators
             //     list_Indicies_prey.Length * sizeof(uint),
             //     list_Indicies_prey
             //     );
+
+            //update all data in buffers
+            //predator
             GL.NamedBufferData(Predatorbuffor._vertexBufferObject,
                 list_Vertex_predator.Length * sizeof(float),
                 list_Vertex_predator.ToArray(),
@@ -188,7 +196,7 @@ namespace OpenTk.PrayAndPredators
                 list_Indicies_predator.Length * sizeof(uint),
                 list_Indicies_predator.ToArray(),
                 BufferUsageHint.StreamDraw);
-
+            //prey
             GL.NamedBufferData(Preybuffor._vertexBufferObject,
                 list_Vertex_prey.Length * sizeof(float),
                 list_Vertex_prey.ToArray(),
